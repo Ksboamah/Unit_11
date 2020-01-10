@@ -34,11 +34,16 @@ def main():
     x_pos = BRICK_SEP
     y_pos = BRICK_Y_OFFSET
 
-    for x in range(2):
-        for x in range(BRICKS_PER_ROW):
-            MY_BRICK = brick.Brick(main_surface, BRICK_WIDTH, BRICK_HEIGHT, RED)
-            main_surface.blit(MY_BRICK.image, (x_pos, y_pos))
+    brick_group = pygame.sprite.Group()
+    MY_BRICK = brick.Brick(main_surface, BRICK_WIDTH, BRICK_HEIGHT, RED)
 
+
+    for x in range(2):
+        for x in range(BRICKS_PER_ROW + 1):
+            main_surface.blit(MY_BRICK.image, (((x_pos + BRICK_WIDTH) * x), y_pos))
+            brick_group.add(MY_BRICK)
+        x_pos =  BRICK_SEP
+        y_pos += BRICK_HEIGHT + BRICK_SEP
 
     while True:
         pygame.display.update()
