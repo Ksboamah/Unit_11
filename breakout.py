@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 import paddle
 import brick
+import ball
 
 def main():
     # Constants that will be used in the program
@@ -41,16 +42,19 @@ def main():
 
 
     for color in brick_colors:
-        MY_BRICK = brick.Brick(main_surface, BRICK_WIDTH, BRICK_HEIGHT, color)
-        for x in range(2):
-            MY_BRICK.rect.x = x_pos
-            MY_BRICK.rect.y = y_pos
-            for x in range(BRICKS_PER_ROW + 1):
-                main_surface.blit(MY_BRICK.image, (((x_pos + BRICK_WIDTH) * x), y_pos))
-                brick_group.add(MY_BRICK)
-            x_pos = BRICK_SEP
-            y_pos += BRICK_HEIGHT + BRICK_SEP
 
+        for x in range(2):
+
+            for x in range(BRICKS_PER_ROW):
+                MY_BRICK = brick.Brick(main_surface, BRICK_WIDTH, BRICK_HEIGHT, color)
+                MY_BRICK.rect.x = x_pos
+                MY_BRICK.rect.y = y_pos
+                main_surface.blit(MY_BRICK.image, MY_BRICK.rect)
+                brick_group.add(MY_BRICK)
+                x_pos += BRICK_SEP + BRICK_WIDTH
+
+            y_pos += BRICK_HEIGHT + BRICK_SEP
+            x_pos = BRICK_SEP
 
     paddle_group = pygame.sprite.Group()
     MY_PADDLE = paddle.Paddle(main_surface, BLACK, PADDLE_WIDTH, PADDLE_HEIGHT)
@@ -60,12 +64,17 @@ def main():
 
     main_surface.blit(MY_PADDLE.image, MY_PADDLE.rect)
 
+    MY_BALL = ball.Ball(BLACK, (RADIUS_OF_BALL * 2), (RADIUS_OF_BALL * 2), RADIUS_OF_BALL)
+    main_surface.blit(MY_BALL.image, MY_BALL.rect)
+
     while True:
         main_surface.fill(WHITE)
         for x in brick_group:
             main_surface.blit(x.image, x.rect)
         MY_PADDLE.move(pygame.mouse.get_pos())
         main_surface.blit(MY_PADDLE.image, MY_PADDLE.rect)
+        MY_BALL.move()
+        main_surface.blit(MY_BALL.image, MY_BALL.rect)
         pygame.display.update()
         for event in pygame.event.get():
             if event == QUIT:
