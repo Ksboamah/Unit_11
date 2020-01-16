@@ -3,6 +3,7 @@ from pygame.locals import *
 import paddle
 import brick
 import ball
+import random
 
 def main():
     # Constants that will be used in the program
@@ -64,8 +65,12 @@ def main():
 
     main_surface.blit(MY_PADDLE.image, MY_PADDLE.rect)
 
-    MY_BALL = ball.Ball(BLACK, (RADIUS_OF_BALL * 2), (RADIUS_OF_BALL * 2), RADIUS_OF_BALL)
+    MY_BALL = ball.Ball(BLACK, (APPLICATION_WIDTH), (APPLICATION_HEIGHT), RADIUS_OF_BALL)
+    MY_BALL.rect.x = APPLICATION_WIDTH / 2
+    MY_BALL.rect.y = APPLICATION_HEIGHT / 2
     main_surface.blit(MY_BALL.image, MY_BALL.rect)
+
+
 
     while True:
         main_surface.fill(WHITE)
@@ -74,6 +79,10 @@ def main():
         MY_PADDLE.move(pygame.mouse.get_pos())
         main_surface.blit(MY_PADDLE.image, MY_PADDLE.rect)
         MY_BALL.move()
+        for bricks in brick_group:
+            brick_group.remove(bricks)
+            MY_BALL.collide(brick_group)
+            brick_group.add(bricks)
         main_surface.blit(MY_BALL.image, MY_BALL.rect)
         pygame.display.update()
         for event in pygame.event.get():
