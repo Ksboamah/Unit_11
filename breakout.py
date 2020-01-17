@@ -70,20 +70,25 @@ def main():
     MY_BALL.rect.y = APPLICATION_HEIGHT / 2
     main_surface.blit(MY_BALL.image, MY_BALL.rect)
 
-
-
     while True:
         main_surface.fill(WHITE)
-        for x in brick_group:
-            main_surface.blit(x.image, x.rect)
         MY_PADDLE.move(pygame.mouse.get_pos())
         main_surface.blit(MY_PADDLE.image, MY_PADDLE.rect)
         MY_BALL.move()
-        for bricks in brick_group:
-            brick_group.remove(bricks)
-            MY_BALL.collide(brick_group)
-            brick_group.add(bricks)
         main_surface.blit(MY_BALL.image, MY_BALL.rect)
+        MY_BALL.collide(brick_group)
+        MY_BALL.paddle_collide(paddle_group)
+        for x in brick_group:
+            main_surface.blit(x.image, x.rect)
+        if MY_BALL.rect.y >= APPLICATION_HEIGHT:
+            NUM_TURNS += -1
+            if NUM_TURNS == 0:
+                break
+            else:
+                MY_BALL.rect.x = APPLICATION_WIDTH / 2
+                MY_BALL.rect.y = APPLICATION_HEIGHT / 2
+        if brick_group.has():
+            True
         pygame.display.update()
         for event in pygame.event.get():
             if event == QUIT:
