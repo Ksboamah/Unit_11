@@ -7,8 +7,8 @@ import ball
 
 def GAME_OVER(main_surface):
     main_surface.fill((0, 0, 0))
-    myFont = pygame.font.SysFont("Helvetica", 50)
-    label = myFont.render(" GAME OVER ", 1, ((255, 255, 255)))
+    my_font = pygame.font.SysFont("Helvetica", 50)
+    label = my_font.render(" GAME OVER ", 1, ((255, 255, 255)))
     main_surface.blit(label, (100, 275))
     pygame.display.flip()
     while True:
