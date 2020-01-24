@@ -3,7 +3,32 @@ from pygame.locals import *
 import paddle
 import brick
 import ball
-import random
+
+
+def GAME_OVER(main_surface):
+    main_surface.fill((0, 0, 0))
+    myFont = pygame.font.SysFont("Helvetica", 50)
+    label = myFont.render(" GAME OVER ", 1, ((255, 255, 255)))
+    main_surface.blit(label, (100, 275))
+    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+def GAME_WNNER(main_surface):
+    main_surface.fill((0, 0, 0))
+    myFont = pygame.font.SysFont("Helvetica", 50)
+    label = myFont.render(" WINNER ", 1, ((255, 255, 255)))
+    main_surface.blit(label, (100, 275))
+    pygame.display.flip()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
 
 def main():
     # Constants that will be used in the program
@@ -87,8 +112,17 @@ def main():
             else:
                 MY_BALL.rect.x = APPLICATION_WIDTH / 2
                 MY_BALL.rect.y = APPLICATION_HEIGHT / 2
-        if brick_group.has():
-            True
+        if NUM_TURNS == 0:
+            GAME_OVER(main_surface)
+        if len(brick_group) == 0:  # when is no more bricks in the game the program will show WINNER
+            GAME_WNNER(main_surface)
+        main_surface.blit(MY_BALL.image, MY_BALL.rect)
+        MY_BALL.paddle_collide(paddle_group)
+        MY_BALL.brick_collide(brick_group)
+        if NUM_TURNS == 0:
+            break
+        if brick_group == 0:
+            break
         pygame.display.update()
         for event in pygame.event.get():
             if event == QUIT:
